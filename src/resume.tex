@@ -47,7 +47,7 @@ IoTデバイスはセキュリティを考慮せずに開発されたものが�
 \begin{figure}[!tb]
   \centering
   \includegraphics[width=\linewidth]{img/architecture.eps}
-  \caption{提案手法のアーキテクチャ}
+  \caption{提案手法の構成}
   \label{fig:architecture}
 \end{figure}
 
@@ -63,7 +63,7 @@ IoTデバイスはセキュリティを考慮せずに開発されたものが�
 
 \subsection{構成}
 OpenFlowを用いて，トラフィック監視を行うことで，ホームネットワーク内で行われる通信を制限する．
-本提案手法のアーキテクチャを図\ref{fig:architecture}に示す．
+本提案手法の構成を図\ref{fig:architecture}に示す．
 既存IoTデバイスにOpenFlowスイッチ(OFS)の機能を導入することは困難であると考え，OpenFlowスイッチの機能を持った仮想デバイスを既存IoTデバイスの前に配置する．
 通信が行われる際に，仮想デバイスを通して，OpenFlowコントローラ(OFC)に接続し，トラフィック情報から通信の許可を判断する．
 
