@@ -68,7 +68,7 @@ OpenFlowを用いて，トラフィック監視を行うことで，ホームネ
 通信が行われる際に，仮想デバイスを通して，OpenFlowコントローラ(OFC)に接続し，トラフィック情報から通信の許可を判断する．
 
 \subsection{動作手順}
-本提案手法の動作手順のシーケンス図を図\ref{fig:sequence}に示し，詳細を以下に述べる．
+本提案手法の動作手順のシーケンス図を\figref{fig:sequence}に示し，詳細を以下に述べる．
 
 \begin{enumerate}
   \item 仮想デバイス(OFS)とOFCは互いに，Echo Request/Replyメッセージを定期的に送信
@@ -101,7 +101,24 @@ OpenFlowを用いて，トラフィック監視を行うことで，ホームネ
 \subsection{評価項目}
 本研究では，実用性と信頼性を評価する．
 実用性では，システムの負荷がネットワークに与える影響を測定したいため，遅延を評価する．
-信頼性では，IoTデバイスを用いたシステムの安心安全を確保するための機能として，IPAによりIoT高信頼化要件・機能要件が定義されている．本研究では，システムの稼働中の局面である予防，検知，回復の3つにおける高信頼化要件に対し，提案システムの有効性について考察する．
+信頼性では，IoTデバイスを用いたシステムの安心安全を確保するための機能として，\tabref{tab:IPA}のように，IPAによりIoT高信頼化要件・機能要件が定義されている．本研究では，システムの稼働中の局面である予防，検知，回復の3つにおける高信頼化要件に対し，提案システムの有効性について考察する．
+
+\begin{table*}[!bt]
+  \caption{IPAによるIoT高信頼化要件の定義}
+  \label{tab:IPA}
+  \centering
+  \begin{tabular}{c|l}
+    \hline
+    \multicolumn{2}{c}{IoT高信頼化要件}                                      \\
+    \hline \hline
+    開始 & [要件1]導入時や利用開始時に安全安心が確認できる                   \\
+    予防 & [要件2]稼働中の異常発生を未然に防止できる                         \\
+    検知 & [要件3]稼働中の異常発生を早期に検知できる                         \\
+    回復 & [要件4]異常が発生しても稼働の維持や早期の復旧ができる             \\
+    終了 & [要件5]利用の終了やシステム・サービス終了後も安心安全が確保できる \\
+    \hline
+  \end{tabular}
+\end{table*}
 
 \subsection{評価シナリオ}
 評価シナリオとしては，IoTデバイスが1対1，1対N($2\leqq N \leqq 14$)で通信を行っている状況を想定し，各状況において評価を行う．
@@ -125,6 +142,7 @@ OpenFlowを用いて，トラフィック監視を行うことで，ホームネ
     \bibitem{related} 村上萌, 中村嘉隆, 高橋修, "OpenFlowを用いたホームネットワークへの接続端末制御による不正アクセス防御手法の提案", 研究報告コンピュータセキュリティ(CSEC), Vol.2016-CSEC-72, No.29, pp.1-6, 2016.
     \bibitem{d2d} C. Vallati, A. Virdis, E. Mingozzi and G. Stea, "Mobile-Edge Computing Come Home Connecting things in future smart homes using LTE device-to-device communications", IEEE Consumer Electronics Magazine, Vol.5, No.4, pp.77-83, 2016.
     \bibitem{disap} M. Serror, M. Henze, S. Hack, M. Schuba, and K. Wehrle, "Towards In-Network Security for Smart Homes", Proceedings of the 13th International Conference on Availability, Reliability and Security (ARES 2018), No.18, pp.1-8, 2018.
+    \bibitem{IPA} "「つながる世界の開発指針」の実践に向けた手引き", IPA技術本部 ソフトウェア高信頼化センター(SEC), 2017
   \end{thebibliography}
 }
 
