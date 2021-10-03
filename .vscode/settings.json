@@ -1,10 +1,6 @@
 {
   "latex-workshop.view.pdf.internal.synctex.keybinding": "double-click",
-<<<<<<< HEAD
-  "latex-workshop.latex.autoBuild.run": "onFileChange",
-=======
   "latex-workshop.latex.autoBuild.run": "onSave",
->>>>>>> template/main
   "editor.wordSeparators": "./\\()\"'-:,.;<>~!@#$%^&*|+=[]{}`~?　、。「」【】『』（）！？てにをはがのともへでや",
   "latex-workshop.latex.tools": [
     // latexmk を利用した uplatex によるビルドコマンド
