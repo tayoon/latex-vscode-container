@@ -1,5 +1,6 @@
 \documentclass[Japanese]{dicomopapers}
 %\documentclass[Japanese,noauthor]{dicomopapers}
+
 \usepackage[dvips]{graphicx}
 \usepackage{latexsym}
 
@@ -7,84 +8,90 @@
 \def\endUnderline{\vphantom{y}\egroup\smash{\underline{\box0}}\\}
 \def\|{\verb|}
 
-%概要投稿用余白調整ここから
-\setlength{\Jauthorjreceivesep}{0.0mm}
-\setlength{\Jreceivejabstsep}{0.0mm}
-\setlength{\Jabstsepjkeyword}{0.0mm}
-\setlength{\Jkeywordetitle}{0.0mm}
-%概要投稿用余白調整ここまで
-
 \begin{document}
 
 % 和文表題
-\title{{\LaTeX}によるDICOMO概要テンプレート}
-
+\title{DICOMO2022論文フォーマット}
 % 英文表題
-\etitle{How to Typeset Your Abstract in {\LaTeX}}
+\etitle{DICOMO2022 Paper Format (optional)}
 
 % 所属ラベルの定義
-\affiliate{IPSJ}{（社）情報処理学会\\IPSJ}
-\affiliate{DICOMO}{マルチメディア,分散,協調とモバイルシンポジウム\\DICOMO2022}
+\affiliate{UKAKUU}{架空大学\\
+University of Kakuu}
+\paffiliate{CKAKUU}{架空株式会社\\Kakuu, Corp}
 
-\author{情報 太郎}{TARO JOHO}{IPSJ}
-\author{処理 花子}{HANAKO SHORI}{DICOMO}
+\author{情報 太郎}{TARO JOHO}{UKAKUU}
+\author{処理 花子}{HANAKO SHORI}{CKAKUU}
+
+\begin{abstract}
+このパンフレットは，DICOMO2022に投稿する論文の最終版を，日本語
+{\LaTeX} を用いて作成し提出するためのガイドである．このパンフレットで
+は，論文作成のためのスタイルファイルについて解説している．また，このパ
+ンフレット自体も論文と同じ方法で作成されているので，必要に応じてスタイ
+ルファイルとともに配布するソース・ファイルを参照されたい．また，本スタ
+イルファイルの元になっているのは，情報処理学会論文誌用のスタイルファイ
+ル（ https://www.ipsj.or.jp/journal/submit/style.html からアクセス可能）
+なので，{\LaTeX}コマンドの詳細などについては，それらを参照されたい．
+\underline{\bf なお，論文フォーマットについては，上記の原稿執筆案内に
+  記載されたフォーマットではなく，本フォー}\\
+\underline{\bf マットをご利用いただきたい．}
+
+\end{abstract}
 
 % 表題などの出力
 \maketitle
 
 % 本文はここから始まる
-\section{DICOMO概要テンプレートについて}
-DICOMOでは，カメラレディの投稿論文について，\LaTeX 形
-式の投稿フォーマットを提供しているが，論文発表申し込み
-時の概要は2000字程度の文章を入力すること
-としていた．しかしながら，従来の発表申し込み時の概要
-はともすれば数行の短いものがあるなど，必ずしもクオリ
-ティが保証されず，カメラレディ原稿に至らないケースも
-散見された．
+\section{論文フォーマットについて}
+ページ数の制限は設けない．フルペーパーに相当する論文を基幹論文誌推薦の対象とする．
 
-そこでDICOMOプログラム委員会では，概要のクオリティを
-高めるため，論文投稿フォーマットを踏襲したA4判で1ページ
-の概要テンプレートを提供し，これに基づいて発表申し込
-み概要を登録していただくこととした．
+DICOMO2013より，和文原稿において英語のアブストラクトは記載しないことと
+した．DICOMO2014より，本文の言語と同じ言語の題名と著者名は必須，
+そうでない言語の題名と著者名はどちらでもよいこととした．
+DICOMO2016では，申込み時の概要入力を論文フォーマットに準拠させ，
+概要からの論文作成がスムースに行えるようにした．
 
-この概要はあくまでアブストラクトであるため，細かい
-章立ては不要である．しかし，図を挿入するなど，よりわ
-かりやすく研究の位置づけや成果を示すことができる．本
-概要テンプレートが著者の論文作成を助け，最終発表論文
-のクオリティを向上させ，DICOMOの発展に役立つことを
-期待している．
+その他の本論文の体裁については「情報処理学会論文誌(ジャーナル)原稿執筆
+  案内」（https://www.ipsj.or.jp/\\journal/submit/ronbun\_j\_prms.html）に
+準拠する\cite{webpage}．このフォーマットは，上記案内に準拠しつつ，情報
+処理学会の許諾を得てカスタマイズしたものである．
+なお，DICOMO2022向け原稿に関する特記事項として，以下に留意いただきたい．
 
-\section{概要作成に関する注意}
-\begin{itemize}
-      \item 概要のボリューム
+\begin{itemize}%{
+\item 使用するファイルは，
+\begin{itemize}%{
+\item[]\tt dicomopapers.cls
+\end{itemize}%}
+である．
+\item documentclassの設定は，\\
+      \|\documentclass[Japanese,noauthor]{dicomopapers}|\\
+      とすること．
+  \begin{itemize}
+  \item {\tt Japanese}オプション: 和文原稿の場合に指定する
+%  \item {\tt English}オプション: 英文原稿の場合に指定すること
+  \item {\tt noauthor}オプション: 和文原稿の場合に限り，英文のタイトル
+  と著者名を記載したくない場合に指定する
+  \end{itemize}
+\item biographyセクションは，記述しないこと．
+\item 周りの余白(ヘッダやフッタ)に，学会名やコピーライト，ページ番号などを記入しないこと．
+\item 最後のページに著者紹介を記入しないこと．
 
-            タイトル，著者，所属，概要を含めて本テンプレート1
-            ページとする．
+\end{itemize}%}
 
-      \item 章立て
+著者も含めて論文誌作成に関わる全ての人々の労力を軽減するためにも，
+原稿を作成する前に執筆案内を\underline{\bf{良く読んで規定を守っていただきたい}}．
 
-            章立ては無理に作らず，概要だけでよい．一方で，文章
-            をわかりやすくする段落わけ・箇条書き等は推奨される．
+なお，\underline{\bf これらスタイルファイルについて，情報処理学会}\\
+\underline{\bf に問い合わせることはしないこと．} また
+\underline{\bf DICOMO2022}
+\underline{\bf 運営委員会としても，基本的にサポートはおこなわない}ので，悪しからずご了承いただきたい．
 
-      \item 図表の挿入
-
-            成果をわかりやすく示す図表を挿入してもよい．
-
-      \item 関連文献
-
-            関連する文献を最後に記載してもよい．
-
-      \item アブストラクト集（印刷物）との関係
-
-            本概要はアブストラクト集には掲載されない．本概要をドラフトとして，
-            別途提供される論文フォーマットによりあらためて論文を作成していただきたい．
-
-      \item カメラレディ論文との書誌情報の整合
-
-            本概要，および同時に登録する書誌情報（タイトル，著
-            者名，所属，キーワード等）がプログラム編成・印刷に用いられる．
-            誤りが生じないように，内容を明瞭に記述していただきたい．
-
-\end{itemize}
+\begin{thebibliography}{10}
+\bibitem{webpage}
+情報処理学会: 情報処理学会論文誌(IPSJ Journal)原稿執筆案内，情報処理学
+会(オンライン)，
+\urlj{https://\\www.ipsj.or.jp/journal/submit/ronbun\_j\_prms.html}
+\refdatej{2022-03-01}.
+\end{thebibliography}
 
 \end{document}
