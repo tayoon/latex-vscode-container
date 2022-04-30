@@ -50,13 +50,6 @@ IoTデバイスは十分なセキュリティを考慮せずに開発された�
 セキュリティ対策として，ホームネットワーク内の通信のトラフィック情報は既知であることを考慮し，フローの検証をOpenFlowコントローラで行う．\par
 ルータ内にコンテナを配置し，そのコンテナ上にProxyを作成する．そして，IoTデバイス間で閉じた通信を行うシミュレーションの評価を行い，ホームネットワークにおいてセキュリティ要件を保つことを示した．
 
-\begin{figure}[!tb]
-	\centering
-	\includegraphics[width=\linewidth]{img/system.eps}
-	\caption{提案システムの構成}
-	\label{fig:system}
-\end{figure}
-
 \section{関連研究}
 
 \section{提案システム}
@@ -76,6 +69,41 @@ IoTデバイスは十分なセキュリティを考慮せずに開発された�
 	\item \underline{仮想環境}\mbox{}\\
 	      Proxyの実行環境である．Proxyが作成される際に要求されるリソースを十分に提供することが可能である．
 \end{itemize}
+
+\begin{figure}[!tb]
+	\centering
+	\includegraphics[width=\linewidth]{img/system.eps}
+	\caption{提案システムの構成}
+	\label{fig:system}
+\end{figure}
+
+\begin{figure}[!tb]
+	\centering
+	\includegraphics[width=\linewidth]{img/dockerimage.eps}
+	\caption{imageファイルの作成}
+	\label{fig:dockerimage}
+\end{figure}
+
+\begin{figure}[!tb]
+	\centering
+	\includegraphics[width=\linewidth]{img/seaquence.eps}
+	\caption{動作手順のシーケンス図}
+	\label{fig:seaquence}
+\end{figure}
+
+\begin{figure}[!tb]
+	\centering
+	\includegraphics[width=\linewidth]{img/security.eps}
+	\caption{Proxyのセキュリティ対策}
+	\label{fig:security}
+\end{figure}
+
+\begin{figure}[!tb]
+	\centering
+	\includegraphics[width=\linewidth]{img/openflow.eps}
+	\caption{OpenFlowにおけるフローチェック}
+	\label{fig:openflow}
+\end{figure}
 
 \section{実装}
 \subsection{実装環境}
