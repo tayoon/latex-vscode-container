@@ -24,7 +24,7 @@
 \author{佐藤 健哉}{KENYA SATO}{DOSHISHA}
 
 \begin{abstract}
-	近年，IoT(Internet of Things)が注目を集めるようになり，今後あらゆるモノがネットワークに接続され，利用されることが予想される．しかし，IoTの発展により利便性が高まる一方で，これまでネットワークに接続されていなかったモノが接続されることにより，セキュリティ上のリスクも高まっている．IoTデバイスは十分なセキュリティを考慮せずに開発されたものが多いため，悪意のある攻撃者によるサイバー攻撃の標的になりやすい．また，現在のスマートホームデバイスは，クラウド上のシステムと連携することで，デバイス間の連携を可能にしているが，今後はホームネットワーク内で閉じたデバイス間の通信によって連携を行う形になることが想定される．デバイス間で直接通信を行う場合，各デバイスにおいてどのデバイスとの通信を受け入れるか，アクセス制御を行う必要がある．しかし，IoTデバイスは従来のPC等の既存機器と比較した場合，CPU等のリソースを十分に保持していないため，デバイスの計算能力の制限やソフトウェア自体の脆弱性によって，適用できる機能が限られるという問題がある．そのため，ホームネットワーク内で通信するのであれば，どのデバイスも必ず利用するネットワークを利用したシステムを構築することが望ましい．そこで本研究では，SDN(Software Defined Networks)の代表的プロトコルであるOpenFlowを用いて，ホームネットワーク内の通信を監視するフレームワークの構築を検討した．提案システムでは，セキュリティ対策を適用可能なデバイスをProxyと定義し，ルータ上に仮想的に作成する．ここに，IoTデバイスがリソース量の制限により適用できないセキュリティ対策をオフロードし，このProxyがIoTデバイス間の通信を中継することで，本来IoTデバイスに適用したいセキュリティ対策を実現する．セキュリティ対策として，ホームネットワーク内の通信のトラフィック情報は既知であることを考慮し，フローの検証をOpenFlowコントローラで行う．ルータ内にコンテナを配置し，そのコンテナ上にProxyを作成する．そして，IoTデバイス間で閉じた通信を行うシミュレーションの評価を行い，ホームネットワークにおいてセキュリティ要件を保つことを示した．
+	近年，IoT(Internet of Things)が注目を集めるようになり，今後あらゆるモノがネットワークに接続され，利用されることが予想される．しかし，IoTの発展により利便性が高まる一方で，これまでネットワークに接続されていなかったモノが接続されることにより，セキュリティ上のリスクも高まっている．また，今後はホームネットワーク内で閉じたデバイス間の通信によって連携を行う形になることが想定される．デバイス間で直接通信を行う場合，各デバイスにおいてどのデバイスとの通信を受け入れるか，アクセス制御を行う必要がある．そこで本研究では，SDN(Software Defined Networks)の代表的プロトコルであるOpenFlowを用いて，ホームネットワーク内の通信を監視するフレームワークの構築を検討した．また，提案システムでは，セキュリティ対策をオフロードしたProxyを仮想的に作成し．IoTデバイス間の通信を中継することで，本来IoTデバイスに適用したいセキュリティ対策を実現した．そして，IoTデバイス間で閉じた通信を行うシミュレーションの評価を行い，ホームネットワークにおいてセキュリティ要件を保つことを示した．
 
 \end{abstract}
 
@@ -51,12 +51,26 @@ IoTデバイスは十分なセキュリティを考慮せずに開発された�
 ルータ内にコンテナを配置し，そのコンテナ上にProxyを作成する．そして，IoTデバイス間で閉じた通信を行うシミュレーションの評価を行い，ホームネットワークにおいてセキュリティ要件を保つことを示した．
 
 \section{関連研究}
+\subsection*{ネットワークレベルの攻撃検知・防止}
+Sivanathanらは，SDNを用いてフローレベルでのトラフィックの動的な特性評価の使用を提案した\cite{lowcost}．これにより，データプレーンのトラフィックの一部のみを検査することになり，処理コストやネットワーク帯域のオーバヘッドの抑制を可能にした．また，提案システムにおいて，ノースバンドAPIを介してSDNコントローラと対話する解析エンジンを用い，IoTデバイスのネットワークを常に監視することを可能とした．パケットベースのモニタリングと比較し，セキュリティ上のメリットの大半を処理コストを大幅に削減しながら実現できることがわかった．\par
+しかし，ホームネットワーク内の情報を外部で検査していることが問題点として挙げられる．現在のスマートホームデバイスは，クラウド上のシステムと連携することで，デバイス間の連携を可能にしているが，今後はホームネットワーク内で閉じたデバイス間の通信によって連携を行う形になることが想定される\cite{d2d}．デバイス間で直接通信を行う場合，各デバイスでどういったデバイスとの通信を受け入れるか，アクセス制御を行う必要がある．しかし，全てのデバイスがアクセス制御に対応しているとは限らず，デバイスの計算能力の制限によって実現できるアクセス制御に制限があったり，デバイスのソフトウェア自体の脆弱性によってアクセス制御が機能しない場合が考えられる\cite{disap}．
+
+\subsection{ホームネットワーク運用の外部依存を避けた自己完結型システム}
+Zhangらは，クラウド上の遠隔サーバから制御されている現状のホームネットワークの問題点を挙げ，エンドユーザにシステムの完全な制御を提供するホームネットワークシステムを提案した\cite{sover}．提案システムは，IoTデバイスとアプリケーションがアプリケーション名付きのデータを介して通信し，データを直接保護することを可能にした．\par
+しかし，各IoTデバイスに対応したセキュリティ対策を施す柔軟性を持ち合わせていない．ホームネットワーク内には異なる規格のハードウェアや様々なアプリケーションが混在しているため，各デバイスに柔軟に対応できるシステムを構築することが望ましい．
 
 \section{提案システム}
 \subsection{概要}
 提案システムでは，セキュリティ対策を適用可能なデバイスをProxyと定義し，ルータ上に仮想的に作成する．
 ここに，IoTデバイスがリソース量の制限により適用できないセキュリティ対策をオフロードし，このProxyがIoTデバイス間の通信を中継することで，本来IoTデバイスに適用したいセキュリティ対策を実現する．
 セキュリティ対策として，ホームネットワーク内の通信のトラフィック情報は既知であることを考慮し，フローの検証をOpenFlowコントローラで行う．
+
+\begin{figure}[!tb]
+	\centering
+	\includegraphics[width=\linewidth]{img/system.eps}
+	\caption{提案システムの構成}
+	\label{fig:system}
+\end{figure}
 
 \subsection{システム構成}
 提案システムの構成を\figref{fig:system}に示す．本提案システムの構成要素は，IoTデバイス，Proxy，ルータ，仮想環境から構成される．
@@ -72,24 +86,13 @@ IoTデバイスは十分なセキュリティを考慮せずに開発された�
 
 \begin{figure}[!tb]
 	\centering
-	\includegraphics[width=\linewidth]{img/system.eps}
-	\caption{提案システムの構成}
-	\label{fig:system}
+	\includegraphics[width=\linewidth]{img/openflow.eps}
+	\caption{OpenFlowにおけるフローチェック}
+	\label{fig:openflow}
 \end{figure}
 
-\begin{figure}[!tb]
-	\centering
-	\includegraphics[width=\linewidth]{img/dockerimage.eps}
-	\caption{imageファイルの作成}
-	\label{fig:dockerimage}
-\end{figure}
-
-\begin{figure}[!tb]
-	\centering
-	\includegraphics[width=\linewidth]{img/seaquence.eps}
-	\caption{動作手順のシーケンス図}
-	\label{fig:seaquence}
-\end{figure}
+\subsection{OpenFlowによるフローチェック}
+本研究におけるネットワーク監視をOpenFlowを用いて行う。OpenFlowによるフローチェックを\figref{fig:openflow}に示す。
 
 \begin{figure}[!tb]
 	\centering
@@ -100,25 +103,36 @@ IoTデバイスは十分なセキュリティを考慮せずに開発された�
 
 \begin{figure}[!tb]
 	\centering
-	\includegraphics[width=\linewidth]{img/openflow.eps}
-	\caption{OpenFlowにおけるフローチェック}
-	\label{fig:openflow}
+	\includegraphics[width=\linewidth]{img/dockerimage.eps}
+	\caption{imageファイルの作成}
+	\label{fig:dockerimage}
 \end{figure}
+
+\subsection{Proxyのセキュリティ対策}
+本研究におけるセキュリティ対策として，Proxyごとに異なるセキュリティ対策を適用可能なことが挙げられる．仮想デバイスのセキュリティ対策の適用例を\figref{fig:security}に示す．これによりリソースの都合上，IoTデバイスに直接適用できないセキュリティ対策を導入できることに加え，前述のIoTデバイスの問題点で述べたような様々なセキュリティ要件の変更に対しても柔軟に対応が可能となる．\par
+また，コンテナ上で展開されるセキュリティ対策は適応したいセキュリティ対策に対応したコンテナのimageファイルで定義される．imageファイルの作成図を\figref{fig:dockerimage}に示す．この図のようにIoTデバイスに対して適用したいセキュリティが複数ある場合においても，当該デバイスの規格に対応した対策をそれぞれ作成し，ソフトウェアモジュールのような形で組み合わせて定義することで，imageファイルを作成することが可能となる．
 
 \section{実装}
 \subsection{実装環境}
-本研究の実装環境、実装環境の構成をそれぞれに示す．Proxyの作成方法としては軽量なアプリケーション実行環境であるDockerを利用した．ProxyをDockerで作成されるコンテナ状で稼働させることで複数の論理デバイスをリソース、オーバーヘッドを抑えて作成できることに加え、Docker Hubより配布されるDocker Imageを用いることで容易に作成可能となる．また今回扱う通信プロトコルとしてはhttp(REST)を想定する．
+本研究の実装環境，実装環境の構成をそれぞれに示す．Proxyの作成方法としては軽量なアプリケーション実行環境であるDockerを利用した．ProxyをDockerで作成されるコンテナ状で稼働させることで複数の論理デバイスをリソース，オーバーヘッドを抑えて作成できることに加え，Docker Hubより配布されるDocker Imageを用いることで容易に作成可能となる．また今回扱う通信プロトコルとしてはhttp(REST)を想定する．
 
 \subsection{動作手順}
+
+\begin{figure}[!tb]
+	\centering
+	\includegraphics[width=\linewidth]{img/seaquence.eps}
+	\caption{動作手順のシーケンス図}
+	\label{fig:seaquence}
+\end{figure}
 
 \subsection{想定ユースケース}
 本提案システムを用いた想定ユースケースを以下に示す．各DockerイメージはDocker Hubというユーザが作成したコンテナをアップロードして公開・共有できるサービスを利用することを想定する．
 
 \begin{itemize}
 	\item \underline{リソースを使うセキュリティ対策をあらかじめ提供する場合}\mbox{}\\
-	      SSLによる通信の暗号化など、IoTデバイスのリソースを多く利用するために適用できないセキュリティ対策をあらかじめDockerイメージとして提供し、論理デバイス上で実現する．
+	      SSLによる通信の暗号化など，IoTデバイスのリソースを多く利用するために適用できないセキュリティ対策をあらかじめDockerイメージとして提供し，論理デバイス上で実現する．
 	\item \underline{インシデント発生時などに対策を提供する場合}\mbox{}\\
-	      事前に提供していたセキュリティ対策では想定していなかったインシデント等が発生した場合等に、当該デバイスの持つリソース量に依存せず、追加のセキュリティ対策を提供することが可能となる．
+	      事前に提供していたセキュリティ対策では想定していなかったインシデント等が発生した場合等に，当該デバイスの持つリソース量に依存せず，追加のセキュリティ対策を提供することが可能となる．
 \end{itemize}
 
 \section{評価}
@@ -147,8 +161,10 @@ IoTデバイスを用いたシステムの安心安全を確保するための�
 
 \begin{thebibliography}{10}
 	\bibitem{guideline} IoT推進コンソーシアム, 総務省, 経済産業省, "IoTセキュリティガイドライン ver 1.0", 2016.
+	\bibitem{lowcost} A. Sivanathan, D. Sherratt, H. H. Gharakheili, V. Sivaraman and A. Vishwanath, "Low-cost flow-based security solutions for smart-home IoT devices," 2016 IEEE International Conference on Advanced Networks and Telecommunications Systems (ANTS), pp. 1-6, 2016.
 	\bibitem{d2d} C. Vallati et al., "Mobile-Edge Computing Come Home Connecting things in future smart homes using LTE device-to-device communications", IEEE Consumer Electronics Magazine, Vol.5, No.4, pp.77-83, 2016.
 	\bibitem{disap} M. Serror et al., "Towards In-Network Security for Smart Homes", Proceedings of the 13th International Conference on Availability, Reliability and Security (ARES 2018), No.18, pp.1-8, 2018.
+	\bibitem{sover} Z. Zhang, T. Yu, X. Ma, Y. Guan, P. Moll and L. Zhang, "Sovereign: Self-contained Smart Home with Data-centric Network and Security," in IEEE Internet of Things Journal, 2022.
 	\bibitem{OpenFlow} Nick McKeown et al., "OpenFlow: enabling innovation in campus networks", SIGCOMM Computer Communication Review, Vol.38, pp. 69–74, 2008.
 	\bibitem{IPA} IPA技術本部 ソフトウェア高信頼化センター(SEC), "「つながる世界の開発指針」の実践に向けた手引き", 2017.
 	\bibitem{webpage}
