@@ -24,7 +24,7 @@
 \author{佐藤 健哉}{KENYA SATO}{DOSHISHA}
 
 \begin{abstract}
-	近年，IoT(Internet of Things)が注目を集めるようになり，今後あらゆるモノがネットワークに接続され，利用されることが予想される．しかし，IoTの発展により利便性が高まる一方で，これまでネットワークに接続されていなかったモノが接続されることにより，セキュリティ上のリスクも高まっている．また，今後はホームネットワーク内で閉じたデバイス間の通信によって連携を行う形になることが想定される．デバイス間で直接通信を行う場合，各デバイスにおいてどのデバイスとの通信を受け入れるか，アクセス制御を行う必要がある．そこで本研究では，SDN(Software Defined Networks)の代表的プロトコルであるOpenFlowを用いて，ホームネットワーク内の通信を監視するフレームワークの構築を検討した．また，提案システムでは，セキュリティ対策をオフロードしたProxyを仮想的に作成し．IoTデバイス間の通信を中継することで，本来IoTデバイスに適用したいセキュリティ対策を実現した．そして，IoTデバイス間で閉じた通信を行うシミュレーションの評価を行い，ホームネットワークにおいてセキュリティ要件を保つことを示した．
+	近年，IoT(Internet of Things)が注目を集めるようになり，今後あらゆるモノがネットワークに接続され，利用されることが予想される．しかし，IoTの発展により利便性が高まる一方で，これまでネットワークに接続されていなかったモノが接続されることにより，セキュリティ上のリスクも高まっている．また，今後はホームネットワーク内で閉じたデバイス間の通信によって連携を行う形になることが想定される．デバイス間で直接通信を行う場合，各デバイスにおいてどのデバイスとの通信を受け入れるか，アクセス制御を行う必要がある．そこで本研究では，SDN(Software Defined Networks)の代表的プロトコルであるOpenFlowを用いて，ホームネットワーク内の通信を監視するフレームワークの構築を検討した．また，提案システムでは，セキュリティ対策を適用可能なProxyを仮想的に作成した．このProxyにセキュリティ対策をオフロードし，IoTデバイス間の通信を中継することで，本来IoTデバイスに適用したいセキュリティ対策を実現した．そして，IoTデバイス間で閉じた通信を行うシミュレーションの評価を行い，ホームネットワークにおいてセキュリティ要件を保つことを示した．
 
 \end{abstract}
 
@@ -115,21 +115,36 @@ Zhangらは，クラウド上の遠隔サーバから制御されている現状
 
 \section{実装}
 \subsection{実装環境}
-本研究の実装環境，実装環境の構成をそれぞれに示す．Proxyの作成方法としては軽量なアプリケーション実行環境であるDockerを利用した．ProxyをDockerで作成されるコンテナ状で稼働させることで複数の論理デバイスをリソース，オーバーヘッドを抑えて作成できることに加え，Docker Hubより配布されるDocker Imageを用いることで容易に作成可能となる．また今回扱う通信プロトコルとしてはhttp(REST)を想定する．
+本研究の実装環境，実装環境の構成をそれぞれ表\ref{tab:program}と図\ref{fig:program}に示す．Proxyの作成方法としては軽量なアプリケーション実行環境であるDockerを利用した．ProxyをDockerで作成されるコンテナ状で稼働させることで複数の論理デバイスをリソース，オーバーヘッドを抑えて作成できることに加え，Docker Hubより配布されるDocker Imageを用いることで容易に作成可能となる．また今回扱う通信プロトコルとしてはhttp(REST)を想定する．
 
-\begin{table}[!tb]
+\begin{table}[!bt]
 	\caption{実装環境}
-	\label{tab:data_type}
+	\label{tab:program}
 	\centering
 	\begin{tabular}{|c|l|l|}
 		\hline
-		種類     & 項目       & 説明   \\
+		種類     & 項目       & 説明                  \\
 		\hline \hline
-		Proxy    & 使用ソフト & Docker \\
-		OpenFlow & int        & 32     \\
+		Proxy    & 使用ソフト & Docker                \\
+		         & OS         & Ubuntu 20.04          \\
+		         & CPU        & 3.60GHz Intel Core i9 \\
+		         & メモリ     & 5GB                   \\
+		\hline
+		OpenFlow & 使用ソフト & Ryu                   \\
+		         & OS         & Ubuntu 20.04          \\
+		         & CPU        & 3.60GHz Intel Core i9 \\
+		         & メモリ     & 5GB                   \\
+		         & 使用言語   & Python                \\
 		\hline
 	\end{tabular}
 \end{table}
+
+\begin{figure}[!tb]
+	\centering
+	\includegraphics[width=\linewidth]{img/program.eps}
+	\caption{実装環境の構成}
+	\label{fig:program}
+\end{figure}
 
 \subsection{動作手順}
 IoTデバイスの所有者であるユーザが本提案システムを利用する際の動作手順を図\ref{fig:seaquence}と以下に示す．
@@ -155,7 +170,7 @@ IoTデバイスの所有者であるユーザが本提案システムを利用�
 本提案システムを用いた想定ユースケースを以下に示す．各DockerイメージはDocker Hubというユーザが作成したコンテナをアップロードして公開・共有できるサービスを利用することを想定する．
 
 \begin{itemize}
-	\item \underline{リソースを使うセキュリティ対策をあらかじめ提供する場合}\mbox{}\\
+	\item \underline{セキュリティ対策をあらかじめ提供する場合}\mbox{}\\
 	      SSLによる通信の暗号化など，IoTデバイスのリソースを多く利用するために適用できないセキュリティ対策をあらかじめDockerイメージとして提供し，論理デバイス上で実現する．
 	\item \underline{インシデント発生時などに対策を提供する場合}\mbox{}\\
 	      事前に提供していたセキュリティ対策では想定していなかったインシデント等が発生した場合等に，当該デバイスの持つリソース量に依存せず，追加のセキュリティ対策を提供することが可能となる．
@@ -173,9 +188,9 @@ IoTデバイスの所有者であるユーザが本提案システムを利用�
 
 \begin{figure*}[!tb]
 	\centering
-	\includegraphics[width=\linewidth]{img/result_flow2.eps}
-	\includegraphics[width=\linewidth]{img/result_flow3.eps}
-	\includegraphics[width=\linewidth]{img/result_flow4.eps}
+	\includegraphics[width=\linewidth]{img/result_flow2v2.eps}
+	\includegraphics[width=\linewidth]{img/result_flow3v2.eps}
+	\includegraphics[width=\linewidth]{img/result_flow4v2.eps}
 	\caption{imageファイルの作成}
 	\label{fig:result1}
 \end{figure*}
@@ -198,8 +213,6 @@ IoTデバイスの所有者であるユーザが本提案システムを利用�
 登録済みのIoTデバイスかた通信要求が来た場合，登録していないIoTデバイスから通信要求が来た場合，通常の通信頻度と異なる通信がなされている場合のフローテーブルの結果を図\ref{fig:result1}に示す．通常時は他のデバイスに対し，フローテーブルが作成されているが，異常時はパケットをDrop処理するフローテーブルが作成されており，そのフローテーブルが削除されていることがわかる．\par
 また，セキュリティ対策を施した提案システムとセキュリティ対策を施してないシステムにおける通信の比較結果を図に示す．
 
-\subsection{性能に関する考察}
-
 \subsection{信頼性に関する考察}
 IoTデバイスを用いたシステムの安心安全を確保するための機能として，IPAによりIoT高信頼化昨日が定義されており，IoT高信頼化要件として，IPAによりIoT高信頼化要件として，開始，予防，検知，回復，終了の5つの局面に分けてそれぞれセキュリティ要件が定義されている\cite{IPA}．今回は前述の5つより，システム稼働中の局面である予防，検知，回復の3つにおける高信頼化要件に対し，提案システムの有効性について考察する．
 
@@ -211,6 +224,8 @@ IoTデバイスを用いたシステムの安心安全を確保するための�
 	\item \underline{回復の局面における考察}\mbox{}\\
 	      回復の局面での高信頼化要件は，異常が発生した場合に稼働の復旧ができることである．特にIoTでは，さまざまなデバイスが相互通信を行うため，事前に予測していなかった異常が発生することが考えられる．今回の環境では各セキュリティ対策はDocker Hubを通してDockerイメージとして提供することで，事前に作成したセキュリティ対策だけでなく，追加のセキュリティ対策も配布・適用が容易である．
 \end{itemize}
+
+\subsection{性能に関する考察}
 
 \section{まとめ}
 近年，IoT(Internet of Things)が注目を集めるようになり，今後あらゆるモノがネットワークに接続され，利用されることが予想される．しかし，IoTの発展により利便性が高まる一方で，これまでネットワークに接続されていなかったモノが接続されることにより，セキュリティ上のリスクも高まっている．また，今後はホームネットワーク内で閉じたデバイス間の通信によって連携を行う形になることが想定される．デバイス間で直接通信を行う場合，各デバイスにおいてどのデバイスとの通信を受け入れるか，アクセス制御を行う必要がある．そこで本研究では，SDN(Software Defined Networks)の代表的プロトコルであるOpenFlowを用いて，ホームネットワーク内の通信を監視するフレームワークの構築を検討した．また，提案システムでは，セキュリティ対策をオフロードしたProxyを仮想的に作成し．IoTデバイス間の通信を中継することで，本来IoTデバイスに適用したいセキュリティ対策を実現した．そして，IoTデバイス間で閉じた通信を行うシミュレーションの評価を行い，ホームネットワークにおいてセキュリティ要件を保つことを示した．\par
@@ -224,11 +239,6 @@ IoTデバイスを用いたシステムの安心安全を確保するための�
 	\bibitem{sover} Z. Zhang, T. Yu, X. Ma, Y. Guan, P. Moll and L. Zhang, "Sovereign: Self-contained Smart Home with Data-centric Network and Security," in IEEE Internet of Things Journal, 2022.
 	\bibitem{OpenFlow} Nick McKeown et al., "OpenFlow: enabling innovation in campus networks", SIGCOMM Computer Communication Review, Vol.38, pp. 69–74, 2008.
 	\bibitem{IPA} IPA技術本部 ソフトウェア高信頼化センター(SEC), "「つながる世界の開発指針」の実践に向けた手引き", 2017.
-	\bibitem{webpage}
-	情報処理学会: 情報処理学会論文誌(IPSJ Journal)原稿執筆案内，情報処理学
-	会(オンライン)，
-	\urlj{https://\\www.ipsj.or.jp/journal/submit/ronbun\_j\_prms.html}
-	\refdatej{2022-03-01}.
 \end{thebibliography}
 
 \end{document}
