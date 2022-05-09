@@ -54,20 +54,22 @@ IoTデバイスは十分なセキュリティを考慮せずに開発された�
 % ルータ内にコンテナを配置し，そのコンテナ上にProxyを作成する．そして，IoTデバイス間で閉じた通信を行うシミュレーションの評価を行い，ホームネットワークにおいてセキュリティ要件を保つことを示した．
 
 \section{ホームネットワークの問題点}
-IoTデバイスが普及し，スマートホーム等の考えが生まれると，アンチウイルスソフトやファイアウォール等のエンドポイントにおけるセキュリティ対策だけでは困難である．これは，カメラやスマート家電等のIoTデバイスでは，処理能力が低く，エンドポイントセキュリティ対策に求められる要件を満たさないためである．さらに，独自に組み込み用OSが使われているものもあり，それら全てに対応したシステムの構築や更新を続けるのは非常にコストが高い．
-そのような状況の中，脆弱なパスワードでの侵入やデータのプライバシー保護が不十分であることや，安全でないデータの転送等のIoTデバイスのセキュリティ対策不足が挙げられる．
+IoTデバイスが普及し，スマートホーム等の考えが生まれると，アンチウイルスソフトやファイアウォール等のエンドポイントにおけるセキュリティ対策だけでは困難である．これは，カメラやスマート家電等のIoTデバイスでは，処理能力が低く，エンドポイントセキュリティ対策に求められる要件を満たさないためである\cite{camera}．さらに，独自に組み込み用OSが使われているものもあり，それら全てに対応したシステムの構築や更新を続けるのは非常にコストが高い．
+そのような状況の中，脆弱なパスワードでの侵入やデータのプライバシー保護が不十分であることや，安全でないデータの転送等のIoTデバイスのセキュリティ対策不足が挙げられる\cite{owasp}．
 上記の脆弱性から，IoTデバイスが他のデバイスへの感染や攻撃に悪用され，侵入や感染などの被害によってデータ流出や外部サービスへの攻撃などの恐れがあるため，侵入を前提に考えなければならない．このことから，ホームネットワークセキュリティ対策として必要なことは，侵入感染後の被害の最小化であると考えられる．
 
 \section{関連研究}
 \subsection{ネットワークレベルの攻撃検知・防止}
 Sivanathanらは，SDNと外部の解析エンジンを用いて，IoTデバイスのネットワークを常に監視し，フローレベルでのトラフィック検査を提案した\cite{lowcost}．パケットベースのネットワーク監視と比較し，処理コストの大幅な削減を実現した．\par
-しかし，ホームネットワーク内のトラフィック情報検査を外部で行っていることが問題点として挙げられる．現在のスマートホームデバイスは，クラウド上のシステムと連携することで，デバイス間の連携を可能にしているが，今後はホームネットワーク内で閉じたデバイス間の通信によって連携を行う形になることが想定される\cite{d2d}．デバイス間で直接通信を行う場合，各デバイスでどういったデバイスとの通信を受け入れるか，アクセス制御を行う必要がある．しかし，全てのデバイスがアクセス制御に対応しているとは限らず，デバイスの計算能力の制限によって実現できるアクセス制御に制限があったり，デバイスのソフトウェア自体の脆弱性によってアクセス制御が機能しない場合が考えられる\cite{disap}．
+しかし，ホームネットワーク内のトラフィック情報検査を外部で行っていることが問題点として挙げられる．今後のIoTデバイスは、ホームネットワーク内で閉じたデバイス間の通信によって、デバイス間の連携を行う形になることが想定される\cite{d2d}．デバイス間で直接通信を行う場合，各デバイスにおいてアクセス制御を行う必要がある．しかし，全てのデバイスがアクセス制御に対応しているとは限らず，デバイスの計算能力やソフトウェア自体の脆弱性によってアクセス制御が機能しない場合が考えられる\cite{disap}．
+% しかし，ホームネットワーク内のトラフィック情報検査を外部で行っていることが問題点として挙げられる．現在のスマートホームデバイスは，クラウド上のシステムと連携することで，デバイス間の連携を可能にしているが，今後はホームネットワーク内で閉じたデバイス間の通信によって連携を行う形になることが想定される\cite{d2d}．デバイス間で直接通信を行う場合，各デバイスでどういったデバイスとの通信を受け入れるか，アクセス制御を行う必要がある．しかし，全てのデバイスがアクセス制御に対応しているとは限らず，デバイスの計算能力の制限によって実現できるアクセス制御に制限があったり，デバイスのソフトウェア自体の脆弱性によってアクセス制御が機能しない場合が考えられる\cite{disap}．
 
 % Sivanathanらは，SDNを用いてフローレベルでのトラフィックの動的な特性評価の使用を提案した\cite{lowcost}．これにより，データプレーンのトラフィックの一部のみを検査することになり，処理コストやネットワーク帯域のオーバヘッドの抑制を可能にした．また，提案システムにおいて，ノースバンドAPIを介してSDNコントローラと対話する解析エンジンを用い，IoTデバイスのネットワークを常に監視することを可能とした．パケットベースのモニタリングと比較し，セキュリティ上のメリットの大半を処理コストを大幅に削減しながら実現できることがわかった．\par
 % しかし，ホームネットワーク内の情報を外部で検査していることが問題点として挙げられる．現在のスマートホームデバイスは，クラウド上のシステムと連携することで，デバイス間の連携を可能にしているが，今後はホームネットワーク内で閉じたデバイス間の通信によって連携を行う形になることが想定される\cite{d2d}．デバイス間で直接通信を行う場合，各デバイスでどういったデバイスとの通信を受け入れるか，アクセス制御を行う必要がある．しかし，全てのデバイスがアクセス制御に対応しているとは限らず，デバイスの計算能力の制限によって実現できるアクセス制御に制限があったり，デバイスのソフトウェア自体の脆弱性によってアクセス制御が機能しない場合が考えられる\cite{disap}．
 
 \subsection{ホームネットワーク運用の外部依存を避けた自己完結型システム}
-Zhangらは，クラウド上の遠隔サーバから制御されている現状のホームネットワークの問題点を挙げ，エンドユーザにシステムの完全な制御を提供するホームネットワークシステムを提案した\cite{sover}．提案システムは，IoTデバイスとアプリケーションがアプリケーション名付きのデータを介して通信し，データを直接保護することを可能にした．\par
+Zhangらは，クラウド上の遠隔サーバから制御されている現状のホームネットワークの問題点を挙げ，ホームネットワークシステムを提案した\cite{sover}．提案システムでは、トラストアンカーをローカルコントローラに置くことで、デバイスやアプリケーションが全てローカルで管理され、データ検索等の承認や制御もホームネットワークシステム内で行われる。\par
+% 提案システムは，IoTデバイスとアプリケーションがアプリケーション名付きのデータを介して通信し，データを直接保護することを可能にした．\par
 しかし，各IoTデバイスに対応したセキュリティ対策を施す柔軟性を持ち合わせていない．ホームネットワーク内には異なる規格のハードウェアや様々なアプリケーションが混在しているため，各デバイスに柔軟に対応できるシステムを構築することが望ましい．
 
 \begin{figure}[!tb]
@@ -229,7 +231,7 @@ IoTデバイスの所有者であるユーザが本提案システムを利用�
 
 \subsection{評価結果}
 登録済みのIoTデバイスから通信要求が来た場合，登録していないIoTデバイスや通常の通信頻度と異なる等の異常の通信がなされている場合のフローテーブルの結果を図\ref{fig:result1}に示す．通常時は他のデバイスに対し，フローテーブルが作成されている一方で，異常時はパケットをDrop処理するフローテーブルが作成されており，その後，そのフローテーブルが削除されていることがわかる．\par
-また，セキュリティ対策を施した提案システムとセキュリティ対策を施してないシステムにおける通信の比較結果を図に示す．僅かであるが、提案システムは、セキュリティ対策を施していないシステムにおける通信より、EndtoEndの通信時間が劣っていることがわかる．
+また，セキュリティ対策を施した提案システムとセキュリティ対策を施してないシステムにおける通信の比較結果を図\ref{fig:result2}に示す．僅かであるが、提案システムは、セキュリティ対策を施していないシステムにおける通信より、EndtoEndの通信時間が劣っていることがわかる．
 
 \subsection{信頼性に関する考察}
 IoTデバイスを用いたシステムの安心安全を確保するための機能として，IPAによりIoT高信頼化昨日が定義されており，IoT高信頼化要件として，IPAによりIoT高信頼化要件として，開始，予防，検知，回復，終了の5つの局面に分けてそれぞれセキュリティ要件が定義されている\cite{IPA}．今回は前述の5つより，システム稼働中の局面である予防，検知，回復の3つにおける高信頼化要件に対し，提案システムの有効性について考察する．
@@ -242,6 +244,13 @@ IoTデバイスを用いたシステムの安心安全を確保するための�
 	\item \underline{回復の局面における考察}\mbox{}\\
 	      回復の局面での高信頼化要件は，異常が発生した場合に稼働の復旧ができることである．特にIoTでは，さまざまなデバイスが相互通信を行うため，事前に予測していなかった異常が発生することが考えられる．今回の環境では各セキュリティ対策はDocker Hubを通してDockerイメージとして提供することで，事前に作成したセキュリティ対策だけでなく，追加のセキュリティ対策も配布・適用が容易である．
 \end{itemize}
+
+\begin{figure}[!tb]
+	\centering
+	\includegraphics[width=\linewidth]{img/result.eps}
+	\caption{IoTデバイス間通信のEndtoEnd遅延}
+	\label{fig:result2}
+\end{figure}
 
 \subsection{性能に関する考察}
 図より，本提案システムであるDockerを用いたProxyによるセキュリティ対策，OpenFlowによるネットワーク監視は，セキュリティ対策なしの場合と比較し遅延は発生しているが，許容範囲内であり，実用性があると考えられる．\par
@@ -256,12 +265,14 @@ IoTデバイスを用いたシステムの安心安全を確保するための�
 
 \begin{thebibliography}{10}
 	\bibitem{security} 総務省，"IoT・5Gセキュリティ総合対策2020", サイバーセキュリティタスクフォース, pp.1-56, 2020.
-	\bibitem{openflow} Nick McKeown et al., "OpenFlow: enabling innovation in campus networks", SIGCOMM Computer Communication Review, Vol.38, pp.69-74, 2008.
+	\bibitem{openflow} N. McKeown, T. Anderson, H. Balakrishnan, G. Parulkar, L. Peterson, J. Rexford, S. Shenker, and J. Turner, "OpenFlow: enabling innovation in campus networks", SIGCOMM Computer Communication Review, Vol.38, No.2, pp.69-74, 2008.
+	\bibitem{camera} P. A. Abdalla and C. Varol, "Testing IoT Security: The Case Study of an IP Camera", 2020 8th International Symposium on Digital Forensics and Security (ISDFS), pp.1-5, 2020.
+	\bibitem{owasp} P. Ferrara, A. K. Mandal, A. Cortesi and F. Spoto, "Static analysis for discovering IoT vulnerabilities", International Journal on Software Tools for Technology Transfer, Vol.23, No.1, pp.71-88, 2021.
 	\bibitem{lowcost} A. Sivanathan, D. Sherratt, H. H. Gharakheili, V. Sivaraman and A. Vishwanath, "Low-cost flow-based security solutions for smart-home IoT devices," 2016 IEEE International Conference on Advanced Networks and Telecommunications Systems (ANTS), pp.1-6, 2016.
-	\bibitem{d2d} C. Vallati et al., "Mobile-Edge Computing Come Home Connecting things in future smart homes using LTE device-to-device communications", IEEE Consumer Electronics Magazine, Vol.5, No.4, pp.77-83, 2016.
-	\bibitem{disap} M. Serror et al., "Towards In-Network Security for Smart Homes", Proceedings of the 13th International Conference on Availability, Reliability and Security (ARES 2018), No.18, pp.1-8, 2018.
+	\bibitem{d2d} P. Pawar and A. Trivedi, "Device-to-Device Communication Based IoT System: Benefits and Challenges", IETE Technical Review, Vol.36, No.4, pp.362-374, 2019.
+	\bibitem{disap} M. Serror, M. Henze, S. Hack, M. Schuba, and K. Wehrle, "Towards In-Network Security for Smart Homes", Proceedings of the 13th International Conference on Availability, Reliability and Security (ARES 2018), No.18, pp.1-8, 2018.
 	\bibitem{sover} Z. Zhang, T. Yu, X. Ma, Y. Guan, P. Moll and L. Zhang, "Sovereign: Self-contained Smart Home with Data-centric Network and Security", IEEE Internet of Things Journal, 2022.
-	\bibitem{IPA} IPA技術本部 ソフトウェア高信頼化センター(SEC), "「つながる世界の開発指針」の実践に向けた手引き", 2017.
+	\bibitem{IPA} IPA技術本部 ソフトウェア高信頼化センター(SEC), "「つながる世界の開発指針」の実践に向けた手引き [IoT高信頼化機能編]", pp.1-96, 2017.
 \end{thebibliography}
 
 \end{document}
